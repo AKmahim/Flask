@@ -1,0 +1,150 @@
+{% extends "layout.html" %}
+{% include "header.html" %}
+
+{% block title %}
+    Home 
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+            <div class="jumbotron p-3">
+                <!-- toggle modal -->
+                <h2><b>Manage Students</b>
+                    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#add_student">Add New Student</button>
+                </h2>
+
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                        <span aria-hidden="true">X</span>
+                      </button>
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+
+
+                <table class="table table-hover table-dark table-bordered">
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for data in all_data %}
+
+                    <tr>
+                        <td>{{ data.id }}</td>
+                        <td>{{ data.name }}</td>
+                        <td>{{ data.email }}</td>
+                        <td>{{ data.phone }}</td>
+                        <td>
+
+                            <a href="/update/{{data.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{ data.id }}">Edit</a>
+                            <a href="/delete/{{data.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
+
+                        </td>
+
+                    </tr>
+                    
+
+
+                    <!--Edit Modal  is added here-->
+            <!-- Modal -->
+    <div class="modal fade" id="modaledit{{ data.id }}" role="dialog">
+            <div class="modal-dialog">
+            
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header" style="padding:35px 50px;">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4><i class="fas fa-users"></i> Update Information </h4>
+                </div>
+                <div class="modal-body" style="padding:40px 50px;">
+                  <form role="form" action="{{ url_for('update')}}" method="POST">
+                      <!-- name -->
+                    <div class="form-group">
+                      <label for="name"><i class="fas fa-user"></i> Name:</label>
+                      <input type="hidden" name="id" value="{{data.id}}">
+                      <input type="text" class="form-control" id="name" name="name" value="{{ data.name}}">
+                    </div>
+                    <!-- email -->
+        
+                    <div class="form-group">
+                      <label for="email"><i class="fas fa-envelope"></i> Email:</label>
+                      <input type="text" class="form-control" id="email" name="email" value="{{data.email}}">
+                    </div>
+                    <!-- phone -->
+                    <div class="form-group">
+                      <label for="phone"><i class="fas fa-phone-alt"></i> Phone Number:</label>
+                      <input type="number" class="form-control" id="phone" name="phone" value="{{data.phone}}">
+                    </div>
+        
+        
+                      <button type="submit" class="btn btn-success btn-block"><i class="fas fa-upload"></i> Update</button>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><i class="fas fa-remove"></i> Cancel</button>
+                </div>
+              </div>
+              {% endfor %}
+
+                </table>
+            </div>
+            <!--  -->
+            <!--  -->
+            <!--add new student Modal  is added here-->
+            <!-- Modal -->
+    <div class="modal fade" id="add_student" role="dialog">
+        <div class="modal-dialog">
+        
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header" style="padding:35px 50px;">
+              <button type="button" class="close float-right" data-dismiss="modal">&times;</button>
+              <h4><i class="fas fa-users"></i> Insert New Student Data</h4>
+            </div>
+            <div class="modal-body" style="padding:40px 50px;">
+                <!-- Insert Form -->
+              <form role="form" action="{{ url_for('insert') }}" method="POST">
+                  <!-- name -->
+                <div class="form-group">
+                  <label for="name"><i class="fas fa-user"></i> Name:</label>
+                  <input type="text" class="form-control" id="name" name="name" required="1" placeholder="Enter Name" autocomplete="off">
+                </div>
+                <!-- email -->
+    
+                <div class="form-group">
+                  <label for="email"><i class="fas fa-envelope"></i> Email:</label>
+                  <input type="text" class="form-control" id="email" name="email" required="1" placeholder="Enter Email Address" autocomplete="off">
+                </div>
+                <!-- phone -->
+                <div class="form-group">
+                  <label for="phone"><i class="fas fa-phone-alt"></i> Phone Number:</label>
+                  <input type="number" class="form-control" id="phone" name="phone" required="1" placeholder="Enter Phone Number" autocomplete="off">
+                </div>
+    
+    
+                  <button type="submit" class="btn btn-success btn-block"><i class="fas fa-upload"></i> Add Data</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><i class="fas fa-remove"></i> Cancel</button>
+            </div>
+          </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

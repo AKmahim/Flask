@@ -2,7 +2,7 @@ from flask import Flask,render_template,request
 from models import *
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgres+psycopg2://postgres:mahim@localhost:5432/lecture"
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:mahim@localhost/testdb"
 app.config["SQLALCHEMY_TRACK_MODIFICATION"] = False
 db.init_app(app)
 
